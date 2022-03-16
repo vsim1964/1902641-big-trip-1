@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 import {locations} from './locations';
 
- const getRandomInteger = (a = 0, b = 1) => {
+const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
- const generateEventType = () => {
-    const eventTypes = [
+const generateEventType = () => {
+  const eventTypes = [
     'taxi',
     'bus',
     'train',
@@ -18,9 +18,11 @@ import {locations} from './locations';
     'check-in',
     'sightseeing',
     'restaurant'
-];
-const randomIndex = getRandomInteger(0, eventTypes.length - 1);
-return eventTypes[randomIndex];
+  ];
+
+  const randomIndex = getRandomInteger(0, eventTypes.length - 1);
+
+  return eventTypes[randomIndex];
 };
 const generateLocation = () => {
   const cities = locations();
@@ -33,7 +35,7 @@ const generateBeginEndDates = () => {
     .add(getRandomInteger(-maxGap, maxGap), 'day')
     .add(getRandomInteger(-maxGap, maxGap), 'hour')
     .add(getRandomInteger(-maxGap, maxGap), 'minute');
-  const endDate = startDate
+    const endDate = startDate
     .clone()
     .add(getRandomInteger(0, 14), 'day')
     .add(getRandomInteger(0, 59), 'hour')
@@ -45,6 +47,7 @@ const generateBeginEndDates = () => {
 };
 const countDuration = (start, end) => {
   const interval = new Date(end - start);
+
   return {
     days: interval.getUTCDate() - 1,
     hours: interval.getUTCHours(),
@@ -64,7 +67,9 @@ const generateDescription = () => {
     'Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.'
   ];
   const randomIndex = getRandomInteger(0, description.length - 1);
+
   return description[randomIndex];
+
 };
 const generatePhotos = () => {
   const resultPhotosArray = [];
@@ -143,6 +148,7 @@ const generateOffers = () => {
 
 export const generateTripEvent = () => {
   const dates = generateBeginEndDates();
+  
   return {
     eventType: generateEventType(),
     location: generateLocation(),
