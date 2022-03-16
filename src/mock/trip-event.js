@@ -26,16 +26,18 @@ const generateEventType = () => {
 };
 const generateLocation = () => {
   const cities = locations();
+
   const randomIndex = getRandomInteger(0, cities.length - 1);
+
   return cities[randomIndex];
-}
+};
 const generateBeginEndDates = () => {
   const maxGap = 14;
   const startDate = dayjs()
     .add(getRandomInteger(-maxGap, maxGap), 'day')
     .add(getRandomInteger(-maxGap, maxGap), 'hour')
     .add(getRandomInteger(-maxGap, maxGap), 'minute');
-    const endDate = startDate
+  const endDate = startDate
     .clone()
     .add(getRandomInteger(0, 14), 'day')
     .add(getRandomInteger(0, 59), 'hour')
@@ -148,7 +150,7 @@ const generateOffers = () => {
 
 export const generateTripEvent = () => {
   const dates = generateBeginEndDates();
-  
+
   return {
     eventType: generateEventType(),
     location: generateLocation(),
