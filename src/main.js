@@ -1,3 +1,12 @@
+import {renderTemplate, RenderPosition} from './render.js';
+import {createTripTabsTemplate} from './view/trip-tabs-view.js';
+import {createTripFiltersTemplate} from './view/trip-filters-view.js';
+import {createTripSortTemplate} from './view/trip-sort-view.js';
+import {createAddEventItemTemplate} from './view/add-event-item-view.js';
+import {createEditedEventItemTemplate} from './view/edit-event-item-view';
+import {createTripEventsItemTemplate} from './view/trip-events-item-view.js';
+import {createEventsListTemplate} from './view/events-list-view.js';
+import {generateTripEvent} from './mock/trip-event';
 const TRIP_EVENTS_COUNT = 15;
 
 const tripEvents = Array.from({length: TRIP_EVENTS_COUNT}, generateTripEvent);
@@ -19,12 +28,4 @@ renderTemplate(TripEventsListElement, createAddEventItemTemplate(tripEvents[0]),
 for (let i = 2; i < TRIP_EVENTS_COUNT; i++) {
   renderTemplate(TripEventsListElement, createTripEventsItemTemplate(tripEvents[i]), RenderPosition.BEFOREEND);
 }
-import {renderTemplate, RenderPosition} from './render.js';
-import {createTripTabsTemplate} from './view/trip-tabs-view.js';
-import {createTripFiltersTemplate} from './view/trip-filters-view.js';
-import {createTripSortTemplate} from './view/trip-sort-view.js';
-import {createAddEventItemTemplate} from './view/add-event-item-view.js';
-import {createEditedEventItemTemplate} from './view/edit-event-item-view';
-import {createTripEventsItemTemplate} from './view/trip-events-item-view.js';
-import {createEventsListTemplate} from './view/events-list-view.js';
-import {generateTripEvent} from './mock/trip-event';
+

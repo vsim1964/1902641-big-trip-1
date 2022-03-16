@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+import {locations} from '../mock/locations';
+import {eventTypes} from '../mock/event-types';
+
 export const createAddEventItemTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
   const eventType = 'check-in';
@@ -102,6 +106,4 @@ export const createAddEventItemTemplate = (tripEvent) => {
               </form>
             </li>`;
 };
-import dayjs from 'dayjs';
-import {locations} from '../mock/locations';
-import {eventTypes} from '../mock/event-types';
+

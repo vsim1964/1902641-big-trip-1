@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const createTripEventsItemTemplate = (tripEvent) => {
 
   const {eventType, location, price, startDate, endDate, duration, offers, isFavorite} = tripEvent;
@@ -73,4 +75,4 @@ export const createTripEventsItemTemplate = (tripEvent) => {
               </div>
             </li>`;
 };
-import dayjs from 'dayjs';
+

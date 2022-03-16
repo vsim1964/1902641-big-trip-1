@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+import {locations} from '../mock/locations';
+import {eventTypes} from '../mock/event-types';
+
 export const createEditedEventItemTemplate = (tripEvent) => {
   const {eventType, price, location, startDate, endDate, offers, description} = tripEvent;
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
@@ -99,6 +103,3 @@ export const createEditedEventItemTemplate = (tripEvent) => {
               </form>
             </li>`;
 };
-import dayjs from 'dayjs';
-import {locations} from '../mock/locations';
-import {eventTypes} from '../mock/event-types';
