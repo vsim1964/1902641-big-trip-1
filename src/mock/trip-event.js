@@ -77,7 +77,7 @@ const generatePhotos = () => {
   const resultPhotosArray = [];
   for (let i = 0; i < 5; i++) {
     resultPhotosArray[i] = 'http://picsum.photos/248/152?';
-    resultPhotosArray[i]+= getRandomInteger(0, 99).toString();
+    resultPhotosArray[i] += getRandomInteger(0, 99).toString();
   }
   return resultPhotosArray;
 };
