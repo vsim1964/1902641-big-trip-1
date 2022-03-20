@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
 import {eventTypes} from '../mock/event-types';
+import {createElement} from '../render';
 
-export const createEditedEventItemTemplate = (tripEvent) => {
+const createEventItemEditTemplate = (tripEvent) => {
   const {eventType, price, location, startDate, endDate, offers, description} = tripEvent;
-  const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
-  const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
-  const createEditedOfferElement = (offer) => {
+  const startDatetime = dayjs(startDate).format('D/MM/YY HH:mm ');
+  const endDatetime = dayjs(endDate).format('D/MM/YY HH:mm');
+
+  const createOfferMarkup = (offer) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
     const offerName = offer.name;
     const offerPrice = offer.price;
@@ -22,8 +24,8 @@ export const createEditedEventItemTemplate = (tripEvent) => {
                       </div>
     `;
   };
-  const editedOfferElements = offers.map(createEditedOfferElement).join('');
-  const createOffersList = (editedOffers) => {
+
+  const createOffersListMarkup = (editedOffers) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -32,10 +34,9 @@ export const createEditedEventItemTemplate = (tripEvent) => {
     }
     return '';
   };
-  const offersList = createOffersList(editedOfferElements);
+
   const createLocationOption = (city) => (`<option value="${city}"></option>`);
-  const locationOptions = locations().map(createLocationOption).join('');
-  const createEventTypes = (types = eventTypes(), chosenEventType) => {
+  const createEventTypesMarkup = (types = eventTypes(), chosenEventType) => {
     const createType = (currentType) => {
       const isChecked = currentType === chosenEventType ? 'checked=""' : '';
       const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
@@ -46,7 +47,11 @@ export const createEditedEventItemTemplate = (tripEvent) => {
     };
     return types.map(createType).join('');
   };
-  const eventTypesElements = createEventTypes(eventTypes(), eventType);
+
+  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
+  const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
+  const locationOptions = locations().map(createLocationOption).join('');
+  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
   const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -60,7 +65,7 @@ export const createEditedEventItemTemplate = (tripEvent) => {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${eventTypesElements}
+                        ${eventTypesMarkup}
                       </fieldset>
                     </div>
                   </div>
@@ -94,7 +99,7 @@ export const createEditedEventItemTemplate = (tripEvent) => {
                   </button>
                 </header>
                 <section class="event__details">
-                  ${offersList}
+                  ${editedOffersMarkup}
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
@@ -103,3 +108,28 @@ export const createEditedEventItemTemplate = (tripEvent) => {
               </form>
             </li>`;
 };
+
+export default class EventItemEditView {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventItemEditTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
