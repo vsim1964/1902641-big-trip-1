@@ -59,7 +59,7 @@ const createTripEventsItemTemplate = (tripEvent) => {
                   &euro;&nbsp;<span class="event__price-value">${price}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
-                <ul class="event__selected-offers">${offersElements}</ul>
+                <ul class="event__selected-offers">${offersMarkup}</ul>
                 <button class="event__favorite-btn${isFavoriteClass}" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

@@ -28,9 +28,7 @@ const createEventItemEditTemplate = (tripEvent) => {
   const createOffersListMarkup = (editedOffers) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${editedOffers}
-                  </section>`;
+                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>${editedOffers}</section>`;
     }
     return '';
   };
@@ -48,11 +46,12 @@ const createEventItemEditTemplate = (tripEvent) => {
     return types.map(createType).join('');
   };
 
-  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
+  const editedOffersmarkup = offers.map(createOfferMarkup).join('');
   const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
   const locationOptions = locations().map(createLocationOption).join('');
   const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
   const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -98,9 +97,7 @@ const createEventItemEditTemplate = (tripEvent) => {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
-                <section class="event__details">
-                  ${editedOffersMarkup}
-                  <section class="event__section  event__section--destination">
+                <section class="event__details">${editedOffersmarkup}<section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
                   </section>
