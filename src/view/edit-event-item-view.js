@@ -13,6 +13,7 @@ const createEventItemEditTemplate = (tripEvent) => {
     const offerName = offer.name;
     const offerPrice = offer.price;
     const offerType = offer.type;
+
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}"${isChecked}>
@@ -97,7 +98,7 @@ const createEventItemEditTemplate = (tripEvent) => {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
-                <section class="event__details">${editedOffersmarkup}<section class="event__section  event__section--destination">
+                <section class="event__details">${offersListMarkup}<section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
                   </section>

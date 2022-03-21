@@ -4,7 +4,7 @@ import {eventTypes} from '../mock/event-types';
 import {createElement} from '../render';
 
 const createAddEventItemTemplate = (tripEvent) => {
-  const {offers: addableOffersList, description, photos} = tripEvent;
+  const {offers: offers, description, photos} = tripEvent;
   const eventType = 'check-in';
   const templateDatetime = dayjs().add(17, 'day').hour(12).minute(0).format('D/MM/YY HH:mm');
 
@@ -28,12 +28,11 @@ const createAddEventItemTemplate = (tripEvent) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${editedOffers}
-                  </section>`;
+                    ${addableOffersMarkup.map(createOfferMarkup).join('')}</section>`;
     }
     return '';
   };
-
+  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
   const createLocationOption = (city) => (`<option value="${city}"></option>`);
   const createEventTypesMarkup = (types = eventTypes(), chosenEventType) => {
     const createType = (currentType) => {
@@ -46,7 +45,7 @@ const createAddEventItemTemplate = (tripEvent) => {
     };
     return types.map(createType).join('');
   };
-  const addableOffersMarkup = createOfferListMarkup(addableOffersList);
+  const addableOffersMarkup = createOfferListMarkup(offers);
   const photosList = photos.map(createPhotoMarkup).join('');
   const locationOptions = locations().map(createLocationOption).join('');
   const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
@@ -95,7 +94,7 @@ const createAddEventItemTemplate = (tripEvent) => {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
-                  ${addableOffersList}
+                  ${addableOffersMarkup}
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
