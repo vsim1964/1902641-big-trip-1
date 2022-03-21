@@ -24,11 +24,11 @@ const createAddEventItemTemplate = (tripEvent) => {
     `;
   };
 
-  const createOffersListMarkup = (editedOffers) => {
-    if (editedOffers.length !== 0){
+  const createOffersListMarkup = (addableOffers) => {
+    if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${addableOffersMarkup.map(createOfferMarkup).join('')}</section>`;
+                    ${offers.map(createOfferMarkup).join('')}</section>`;
     }
     return '';
   };
