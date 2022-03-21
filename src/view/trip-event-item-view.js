@@ -37,7 +37,7 @@ const createTripEventsItemTemplate = (tripEvent) => {
     return timeDiff.join(' ');
   };
   const durationText = getDuration(duration);
-  const OffersMarkup = offers.map(createOfferMarkup).join('');
+  const offersMarkup = offers.map(createOfferMarkup).join('');
 
   return `<li class="trip-events__item">
               <li class="trip-events__item">

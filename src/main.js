@@ -57,5 +57,5 @@ const renderEvent = (eventListElement, event) => {
 
 for (let i = 1; i < TRIP_EVENTS_COUNT; i++) {
   renderEvent(tripEventsListElement.element, tripEvents[i]);
-};
+}
 

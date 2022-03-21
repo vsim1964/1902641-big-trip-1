@@ -47,7 +47,7 @@ const createEventItemEditTemplate = (tripEvent) => {
     return types.map(createType).join('');
   };
 
-  const editedOffersmarkup = offers.map(createOfferMarkup).join('');
+  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
   const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
   const locationOptions = locations().map(createLocationOption).join('');
   const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);

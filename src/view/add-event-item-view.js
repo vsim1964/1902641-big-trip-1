@@ -45,7 +45,7 @@ const createAddEventItemTemplate = (tripEvent) => {
     };
     return types.map(createType).join('');
   };
-  const addableOffersMarkup = createOfferListMarkup(offers);
+  const addableOffersMarkup = createOffersListMarkup(offers);
   const photosList = photos.map(createPhotoMarkup).join('');
   const locationOptions = locations().map(createLocationOption).join('');
   const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
