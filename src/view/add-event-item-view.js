@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
 import {eventTypes} from '../mock/event-types';
+import {createElement} from '../render';
 
-export const createAddEventItemTemplate = (tripEvent) => {
-  const {offers, description, photos} = tripEvent;
+const createAddEventItemTemplate = (tripEvent) => {
+  const {offers: offers, description, photos} = tripEvent;
   const eventType = 'check-in';
-  const templateDatetime = dayjs().add(14, 'day').hour(10).minute(0).format('D/MM/YY HH:mm');
-  const createOfferElement = (offer) => {
+  const templateDatetime = dayjs().add(17, 'day').hour(12).minute(0).format('D/MM/YY HH:mm');
+  const createOfferMarkup = (offer) => {
     const offerName = offer.name;
     const offerPrice = offer.price;
     const offerType = offer.type;
@@ -21,22 +22,18 @@ export const createAddEventItemTemplate = (tripEvent) => {
                       </div>
     `;
   };
-  const addableOfferElements = offers.map(createOfferElement).join('');
-  const createAddableOfferList = (addableOffers) => {
+
+  const createOffersListMarkup = (addableOffers) => {
     if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${addableOfferElements}
-                  </section>`;
+                    ${offers.map(createOfferMarkup).join('')}</section>`;
     }
     return '';
   };
-  const addableOfferList = createAddableOfferList(offers);
-  const translatePhotoToHTML = (photo) => (`<img className="event__photo" src="${photo}">`);
-  const photosList = photos.map(translatePhotoToHTML).join('');
+  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
   const createLocationOption = (city) => (`<option value="${city}"></option>`);
-  const locationOptions = locations().map(createLocationOption).join('');
-  const createEventTypes = (types = eventTypes(), chosenEventType) => {
+  const createEventTypesMarkup = (types = eventTypes(), chosenEventType) => {
     const createType = (currentType) => {
       const isChecked = currentType === chosenEventType ? 'checked=""' : '';
       const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
@@ -47,8 +44,12 @@ export const createAddEventItemTemplate = (tripEvent) => {
     };
     return types.map(createType).join('');
   };
-  const eventTypesElements = createEventTypes(eventTypes(), eventType);
+  const addableOffersMarkup = createOffersListMarkup(offers);
+  const photosList = photos.map(createPhotoMarkup).join('');
+  const locationOptions = locations().map(createLocationOption).join('');
+  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
   const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -61,7 +62,7 @@ export const createAddEventItemTemplate = (tripEvent) => {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${eventTypesElements}
+                        ${eventTypesMarkup}
                       </fieldset>
                     </div>
                   </div>
@@ -92,7 +93,7 @@ export const createAddEventItemTemplate = (tripEvent) => {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
-                  ${addableOfferList}
+                  ${addableOffersMarkup}
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
@@ -106,4 +107,29 @@ export const createAddEventItemTemplate = (tripEvent) => {
               </form>
             </li>`;
 };
+
+export default class AddEventItemView {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createAddEventItemTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
 
