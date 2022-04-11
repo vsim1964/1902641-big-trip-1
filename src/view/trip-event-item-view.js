@@ -1,4 +1,4 @@
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 import dayjs from 'dayjs';
 
 const createTripEventsItemTemplate = (tripEvent) => {
@@ -72,27 +72,8 @@ const createTripEventsItemTemplate = (tripEvent) => {
               </div>
             </li>`;
 };
-export default class TripEventItemView {
-  #element = null;
-  #event = null;
-
-  constructor(event) {
-    this.#event = event;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
+export default class TripEventItemView extends AbstractView {
   get template() {
-    return createTripEventsItemTemplate(this.#event);
-  }
-
-  removeElement() {
-    this.#element = null;
+    return createTripEventsItemTemplate();
   }
 }
