@@ -7,6 +7,7 @@ import EventItemEditView from './view/event-edit-view';
 import TripEventItemView from './view/event-item-view.js';
 import EventsListView from './view/events-list-view.js';
 import {generateTripEvent} from './mock/trip-event';
+// import NoTripEventsView from './view/no-trip-events-view';
 
 const TRIP_EVENTS_COUNT = 18;
 
@@ -36,6 +37,7 @@ const renderEvent = (eventListElement, event) => {
   };
   const onEscKeyDown = (evt) => {
     if(evt.key === 'Escape') {
+
       evt.preventDefault();
       replaceFormToItem();
       document.removeEventListener('keydown', onEscKeyDown);
