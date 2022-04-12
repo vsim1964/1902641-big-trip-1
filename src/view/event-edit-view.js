@@ -116,6 +116,26 @@ export default class EventItemEditView extends AbstractView {
   }
 
   get template() {
-    return createEventItemEditTemplate();
+    return createEventItemEditTemplate(this.#tripEvent);
+  }
+
+  setFormSubmit = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  setRollupClickHandler = (callback) => {
+    this._callback.setRollupClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
+  }
+
+  #rollupClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.rollupClick();
   }
 }
