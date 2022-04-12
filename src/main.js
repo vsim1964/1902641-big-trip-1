@@ -2,9 +2,9 @@ import {render, RenderPosition} from './render.js';
 import TripTabsView from './view/trip-tabs-view.js';
 import TripFiltersView from './view/trip-filters-view.js';
 import TripSortView from './view/trip-sort-view.js';
-import AddEventItemView from './view/add-event-item-view.js';
-import EventItemEditView from './view/edit-event-item-view';
-import TripEventItemView from './view/trip-event-item-view.js';
+import AddEventItemView from './view/event-add-view.js';
+import EventItemEditView from './view/event-edit-view';
+import TripEventItemView from './view/event-item-view.js';
 import EventsListView from './view/events-list-view.js';
 import {generateTripEvent} from './mock/trip-event';
 
@@ -22,7 +22,7 @@ render(tripControlsNavigationElement, new TripTabsView().element, RenderPosition
 render(tripControlsFiltersElement, new TripFiltersView().element, RenderPosition.BEFOREEND);
 render(tripEventsElement, new TripSortView().element, RenderPosition.AFTERBEGIN);
 render(tripEventsListElement.element, new AddEventItemView(tripEvents[1]).element, RenderPosition.BEFOREEND);
-render(tripEventsListElement.element, new AddEventItemView(tripEvents[0]).element, RenderPosition.BEFOREEND);
+// render(tripEventsListElement.element, new AddEventItemView(tripEvents[0]).element, RenderPosition.BEFOREEND);
 
 const renderEvent = (eventListElement, event) => {
   const eventItemComponent = new TripEventItemView(event);

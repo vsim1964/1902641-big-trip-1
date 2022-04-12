@@ -3,12 +3,16 @@ import dayjs from 'dayjs';
 
 const createTripEventsItemTemplate = (tripEvent) => {
   const {eventType, location, price, startDate, endDate, duration, offers, isFavorite} = tripEvent;
+
   const startDay = dayjs(startDate).format('MMM D');
   const beginDate = dayjs(startDate).format('YYYY-MM-D');
+
   const startTime = dayjs(startDate).format('HH:mm');
   const startDatetime = dayjs(startDate).format('YYYY-MM-DTHH:mm');
+
   const endTime = dayjs(endDate).format('HH:mm');
   const endDatetime = dayjs(endDate).format('YYYY-MM-DTHH:mm');
+
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
   const createOfferMarkup = (offer) => {
@@ -73,6 +77,13 @@ const createTripEventsItemTemplate = (tripEvent) => {
             </li>`;
 };
 export default class TripEventItemView extends AbstractView {
+  #tripEvent = null;
+
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
+  }
+
   get template() {
     return createTripEventsItemTemplate();
   }

@@ -5,10 +5,11 @@ import AbstractView from './abstract-view';
 
 const createAddEventItemTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
-  const eventType = 'check-in';
+  const eventType = 'Check-in';
   const templateDatetime = dayjs().add(17, 'day').hour(12).minute(0).format('D/MM/YY HH:mm');
+
   const createOfferMarkup = (offer) => {
-    const {type, name, price} = offer;
+    const {name, price, type} = offer;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" >
@@ -107,6 +108,13 @@ const createAddEventItemTemplate = (tripEvent) => {
 };
 
 export default class AddEventItemView extends AbstractView {
+  #tripEvent = null;
+
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
+  }
+
   get template() {
     return createAddEventItemTemplate();
   }

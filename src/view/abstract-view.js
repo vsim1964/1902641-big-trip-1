@@ -3,7 +3,6 @@ import { createElement } from '../render';
 export default class AbstractView {
   #element = null;
 
-
   constructor(){
     if (new.target === AbstractView) {
       throw new Error('Can\'t instantiate AbstractView, only concreate one.');
