@@ -107,7 +107,7 @@ const createEventItemEditTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class EventItemEditView extends AbstractView {
+export default class EventEditView extends AbstractView {
   #tripEvent = null;
 
   constructor(tripEvent) {

@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
-import {locations} from '../mock/locations';
-import {eventTypes} from '../mock/event-types';
-import AbstractView from './abstract-view';
+import {locations} from '../mock/locations.js';
+import {eventTypes} from '../mock/event-types.js';
+import AbstractView from './abstract-view.js';
 
 const createAddEventItemTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
   const eventType = 'Check-in';
   const templateDatetime = dayjs().add(17, 'day').hour(12).minute(0).format('D/MM/YY HH:mm');
+
 
   const createOfferMarkup = (offer) => {
     const {name, price, type} = offer;
@@ -107,7 +108,7 @@ const createAddEventItemTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class AddEventItemView extends AbstractView {
+export default class EventAddView extends AbstractView {
   #tripEvent = null;
 
   constructor(tripEvent) {
