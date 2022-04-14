@@ -11,8 +11,7 @@ const createAddEventItemTemplate = (tripEvent) => {
 
   const createOfferMarkup = (offer) => {
     const {name, price, type} = offer;
-    return `<div class="event__available-offers">
-                      <div class="event__offer-selector">
+    return `<div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" >
                         <label class="event__offer-label" for="event-offer-name-1">
                           <span class="event__offer-title">${name}</span>
@@ -27,7 +26,9 @@ const createAddEventItemTemplate = (tripEvent) => {
     if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${offers.map(createOfferMarkup).join('')}</section>`;
+                    <div class="event__available-offers">
+                    ${offers.map(createOfferMarkup).join('')}</div>
+                    </section>`;
     }
     return '';
   };
