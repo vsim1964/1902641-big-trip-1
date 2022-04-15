@@ -54,7 +54,7 @@ const renderTripEvent = (tripEventListElement, tripEvent) => {
 
   eventEditComponent.setRollupClickHandler(() => {
     replaceFormToItem();
-    document.removeEventListener('keydown', onEscKeyDown);
+    document.addEventListener('keydown', onEscKeyDown);
   });
 
   eventEditComponent.setFormSubmit(() => {
