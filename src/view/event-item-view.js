@@ -74,7 +74,7 @@ const createTripEventsItemTemplate = (tripEvent) => {
   </div>
 </li>`;
 };
-export default class TripEventItemView extends AbstractView {
+export default class EventItemView extends AbstractView {
   #tripEvent = null;
 
   constructor(tripEvent) {
@@ -83,7 +83,7 @@ export default class TripEventItemView extends AbstractView {
   }
 
   get template() {
-    return createTripEventsItemTemplate();
+    return createTripEventsItemTemplate(this.#tripEvent);
   }
 
   setEditClickHandler = (callback) => {
