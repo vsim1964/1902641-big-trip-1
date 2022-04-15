@@ -9,7 +9,7 @@ import EventsListView from './view/events-list-view.js';
 import {generateTripEvent} from './mock/trip-event.js';
 import NoTripEventsView from './view/no-trip-events-view.js';
 
-const TRIP_EVENTS_COUNT = 18;
+const TRIP_EVENTS_COUNT = 10;
 
 const tripEvents = Array.from({length: TRIP_EVENTS_COUNT}, generateTripEvent);
 
@@ -47,17 +47,17 @@ const renderTripEvent = (tripEventListElement, tripEvent) => {
       document.removeEventListener('keydown', onEscKeyDown);
     }
   };
-  eventItemComponent.setEditClickHandler(() => {
+  eventEditComponent.setEditClickHandler(() => {
     replaceItemToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.setRollupClickHandler(() => {
+  eventItemComponent.setRollupClickHandler(() => {
     replaceFormToItem();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.setFormSubmit(() => {
+  eventItemComponent.setFormSubmit(() => {
     replaceFormToItem();
     document.removeEventListener('keydown', onEscKeyDown);
   });
