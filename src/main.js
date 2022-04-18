@@ -3,8 +3,8 @@ import TripTabsView from './view/trip-tabs-view.js';
 import TripFiltersView from './view/trip-filters-view.js';
 import TripSortView from './view/trip-sort-view.js';
 import EventAddView from './view/event-add-view.js';
-import EventItemView from './view/event-edit-view';
-import EventEditView from './view/event-item-view.js';
+import EventEditView from './view/event-edit-view';
+import EventItemView from './view/event-item-view.js';
 import EventsListView from './view/events-list-view.js';
 import {generateTripEvent} from './mock/trip-event.js';
 import NoTripEventsView from './view/no-trip-events-view.js';
@@ -47,17 +47,17 @@ const renderTripEvent = (tripEventListElement, tripEvent) => {
       document.removeEventListener('keydown', onEscKeyDown);
     }
   };
-  eventEditComponent.setEditClickHandler(() => {
+  eventItemComponent.setEditClickHandler(() => {
     replaceItemToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventItemComponent.setRollupClickHandler(() => {
+  eventEditComponent.setRollupClickHandler(() => {
     replaceFormToItem();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventItemComponent.setFormSubmit(() => {
+  eventEditComponent.setFormSubmit(() => {
     replaceFormToItem();
     document.removeEventListener('keydown', onEscKeyDown);
   });

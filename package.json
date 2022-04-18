@@ -11,6 +11,14 @@
   },
   "devDependencies": {
     "@babel/core": "7.17.5",
+    "@babel/eslint-parser": "7.16.0",
+    "@babel/plugin-proposal-class-properties": "7.16.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.0",
+    "@babel/plugin-proposal-optional-chaining": "7.16.0",
+    "babel-loader": "8.2.3",
+    "webpack": "5.62.1",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.4.0",
     "eslint": "7.32.0",
     "eslint-config-htmlacademy": "5.0.0"
   },
@@ -18,14 +26,6 @@
     "node": "16"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.0",
-    "babel-loader": "^8.2.3",
-    "dayjs": "1.10.7",
-    "webpack": "^5.62.1",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0"
+    "dayjs": "1.10.7"
   }
 }
