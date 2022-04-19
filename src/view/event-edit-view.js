@@ -1,57 +1,18 @@
 import dayjs from 'dayjs';
-import {locations} from '../mock/locations';
-import {eventTypes} from '../mock/event-types';
-import {createElement} from '../render';
+import { locations } from '../mock/locations';
+import { eventTypes } from '../mock/event-types';
+import AbstractView from './abstract-view';
+import {createEventTypesMarkup, createOffersSectionMarkup} from '../utils/path';
 
-const createEventItemEditTemplate = (tripEvent) => {
-  const {eventType, price, location, startDate, endDate, offers, description} = tripEvent;
+
+const createEventEditTemplate = (tripEvent) => {
+  const { eventType, price, location, startDate, endDate, offers, description } = tripEvent;
   const startDatetime = dayjs(startDate).format('D/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('D/MM/YY HH:mm');
-
-  const createOfferMarkup = (offer) => {
-    const isChecked = offer.isChosen ? ' checked=""' : '';
-    const offerName = offer.name;
-    const offerPrice = offer.price;
-    const offerType = offer.type;
-
-    return `<div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}"${isChecked}>
-                        <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${offerName}</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">${offerPrice}</span>
-                        </label>
-                      </div>
-    `;
-  };
-
-  const createOffersListMarkup = (editedOffers) => {
-    if (editedOffers.length !== 0){
-      return `<section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>${editedOffers}</section>`;
-    }
-    return '';
-  };
-
-  const createLocationOption = (city) => (`<option value="${city}"></option>`);
-  const createEventTypesMarkup = (types = eventTypes(), chosenEventType) => {
-    const createType = (currentType) => {
-      const isChecked = currentType === chosenEventType ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${currentType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${currentType}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${currentType}" for="event-type-${currentType}-1">${label}</label>
-                        </div>`;
-    };
-    return types.map(createType).join('');
-  };
-
-  const editedOffersMarkup = offers.map(createOfferMarkup).join('');
-  const offersListMarkup = createOffersListMarkup(editedOffersMarkup);
-  const locationOptions = locations().map(createLocationOption).join('');
-  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
+  const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
   const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+  const offersListMarkup = createOffersSectionMarkup(offers);
+  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -107,27 +68,45 @@ const createEventItemEditTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class EventItemEditView {
-  #element = null;
-  #event = null;
+export default class EventEditView extends AbstractView {
+  #tripEvent = null;
 
-  constructor(event) {
-    this.#event = event;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
   }
 
   get template() {
-    return createEventItemEditTemplate(this.#event);
+    return createEventEditTemplate(this.#tripEvent);
   }
 
-  removeElement() {
-    this.#element = null;
+  setFormSubmit = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  setRollupClickHandler = (callback) => {
+    this._callback.setRollupClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
+  }
+
+  setEditClickHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+  }
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  #rollupClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.rollupClick();
   }
 }
