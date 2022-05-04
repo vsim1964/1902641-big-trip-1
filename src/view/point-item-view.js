@@ -1,8 +1,8 @@
 import AbstractView from './abstract-view';
 import dayjs from 'dayjs';
 
-const createTripEventsItemTemplate = (tripEvent) => {
-  const { eventType, location, price, name, startDate, endDate, duration, offers, isFavorite } = tripEvent;
+const createPointsItemTemplate = (tripPoint) => {
+  const {pointType, location, price, startDate, endDate, duration, offers, isFavorite } = tripPoint;
 
   const startDay = dayjs(startDate).format('MMM D');
   const beginDate = dayjs(startDate).format('YYYY-MM-D');
@@ -17,11 +17,12 @@ const createTripEventsItemTemplate = (tripEvent) => {
 
   const createOfferMarkup = (offer) => {
     if (offer.isChosen) {
-      // const {name, price} = offer;
+      const offerName = offer.name;
+      const offerPrice = offer.price;
       return `<li class="event__offer">
-               <span class="event__offer-title">${name}</span>
+               <span class="event__offer-title">${offerName}</span>
                &plus;&euro;&nbsp;
-               <span class="event__offer-price">${price}</span>
+               <span class="event__offer-price">${offerPrice}</span>
               </li>`;
     }
   };
@@ -46,9 +47,9 @@ const createTripEventsItemTemplate = (tripEvent) => {
   <div class="event">
     <time class="event__date" datetime="${beginDate}">${startDay}</time>
     <div class="event__type">
-      <img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${pointType}.png" alt="Event type icon">
     </div>
-    <h3 class="event__title">${eventType} ${location}</h3>
+    <h3 class="event__title">${pointType} ${location}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="${startDatetime}">${startTime}</time>
@@ -62,7 +63,7 @@ const createTripEventsItemTemplate = (tripEvent) => {
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">${offersMarkup}</ul>
-    <button class="event__favorite-btn${isFavoriteClass}" type="button">
+    <button class="event__favorite-btn ${isFavoriteClass}" type="button">
       <span class="visually-hidden">Add to favorite</span>
       <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
         <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -74,16 +75,16 @@ const createTripEventsItemTemplate = (tripEvent) => {
   </div>
 </li>`;
 };
-export default class EventItemView extends AbstractView {
-  #tripEvent = null;
+export default class PointItemView extends AbstractView {
+  #tripPoint = null;
 
-  constructor(tripEvent) {
+  constructor(tripPoint) {
     super();
-    this.#tripEvent = tripEvent;
+    this.#tripPoint = tripPoint;
   }
 
   get template() {
-    return createTripEventsItemTemplate(this.#tripEvent);
+    return createPointsItemTemplate(this.#tripPoint);
   }
 
   setEditClickHandler = (callback) => {
@@ -94,5 +95,15 @@ export default class EventItemView extends AbstractView {
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.editClick();
+  }
+
+  setFavoriteClickHandler = (callback) => {
+    this._callback.favoriteClick = callback;
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+  }
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteClick();
   }
 }
