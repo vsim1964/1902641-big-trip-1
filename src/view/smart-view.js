@@ -3,7 +3,7 @@ import AbstractView from './abstract-view';
 export default class SmartView extends AbstractView{
   _data = {};
 
-  updatedData = (update, justDataUpdating) => {
+  updateData = (update, justDataUpdating) => {
     if (!update) {
       return;
     }
