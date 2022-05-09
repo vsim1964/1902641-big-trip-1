@@ -3,6 +3,8 @@ import { locations } from '../mock/locations';
 import { pointTypes } from '../mock/point-types';
 import AbstractView from './abstract-view';
 import { createEventTypesMarkup, createOffersSectionMarkup } from '../utils/path';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 
 const createEventEditTemplate = (tripPoint) => {
