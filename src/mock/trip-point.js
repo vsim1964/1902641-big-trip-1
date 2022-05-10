@@ -39,7 +39,7 @@ export const generatePoint = () => {
     basePrice: generatePrice(),
     dateFrom: dates.from,
     dateTo: dates.to,
-    destination: locationArray[getRandomInteger(0, locationArray.length - 1)],
+    location: locationArray[getRandomInteger(0, locationArray.length - 1)],
     isFavorite: Boolean(getRandomInteger(0, 1)),
     points: pointArray,
     type: pointArray[getRandomInteger(0, pointArray.length - 1)].type

@@ -8,7 +8,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createPointEditTemplate = (point) => {
 
-  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, location: location, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, location, type} = point;
 
   const DatetimeFrom = dayjs(ISOFrom).format('DD/MM/YY HH:mm ');
   const DatetimeTo = dayjs(ISOTo).format('DD/MM/YY HH:mm');
@@ -181,7 +181,7 @@ export default class PointEditView extends SmartView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      destination: this.#getChangedDestination(evt.target.value)
+      location: this.#getChangedLocation(evt.target.value)
     }, false);
   }
 
@@ -239,12 +239,12 @@ export default class PointEditView extends SmartView {
     return point;
   }
 
-  #getChangedDestination = (destinationName) => {
-    const allDestinations = locations();
+  #getChangedLocation = (locationName) => {
+    const allLocations = locations();
 
-    for (let i = 0; i < allDestinations.length; i++) {
-      if (allDestinations[i].name === destinationName) {
-        return allDestinations[i];
+    for (let i = 0; i < allLocations.length; i++) {
+      if (allLocations[i].name === locationName) {
+        return allLocations[i];
       }
     }
 
