@@ -13,7 +13,7 @@ const createPointTemplate = (point) => {
   const TimeFrom = dayjs(ISOFrom).format('HH:mm');
   const DatetimeFrom = dayjs(ISOFrom).format('YYYY-MM-DDTHH:mm');
 
-  const TimeTo = dayjs(ISOTo).format('HH:mm');
+  const timeTo = dayjs(ISOTo).format('HH:mm');
   const DatetimeTo = dayjs(ISOTo).format('YYYY-MM-DDTHH:mm');
 
   const getDuration = (beginISO, endISO) => {
@@ -66,9 +66,9 @@ const createPointTemplate = (point) => {
       if (offersByTypes[i].type === pointType) {
         offersByCurrentType = offersByTypes[i].offers;
       }
+      // const offersByCurrentType = offersByTypes.find(pointType)?.offers || [];
+      return offersByCurrentType.map(createOfferMarkup).join('');
     }
-
-    return offersByCurrentType.map(createOfferMarkup).join('');
   };
 
 
@@ -85,7 +85,7 @@ const createPointTemplate = (point) => {
                   <p class="event__time">
                     <time class="event__start-time" datetime="${DatetimeFrom}">${TimeFrom}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="${DatetimeTo}">${TimeTo}</time>
+                    <time class="event__end-time" datetime="${DatetimeTo}">${timeTo}</time>
                   </p>
                   <p class="event__duration">${duration}</p>
                 </div>
