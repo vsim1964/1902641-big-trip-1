@@ -1,11 +1,14 @@
-import {render, RenderPosition} from '../utils/render';
+import { render, RenderPosition } from '../utils/render';
 import PointsListView from '../view/points-list-view';
 import NoTripPointsView from '../view/no-trip-points-view';
 import TripSortView from '../view/trip-sort-view';
 import PointPresenter from './point-presenter';
-import {updateItem} from '../utils/favorite';
-import {SortType} from '../utils/const';
-import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point';
+// import HeaderView from '../view/header-view';
+import { updateItem } from '../utils/favorite';
+import { SortType } from '../utils/const';
+import { sortTaskByDay, sortTaskByDuration, sortTaskByPrice } from '../utils/point';
+
+// const tripMainContainer = document.querySelector('.trip-main');
 
 export default class TripPresenter {
   #mainElement = null;
@@ -16,6 +19,7 @@ export default class TripPresenter {
   #tripPointsListElement = new PointsListView();
 
   #tripPoints = [];
+  #infoTrip = null;
   #pointPresenter = new Map();
 
   #currentSortType = SortType.SORT_DAY;
@@ -96,6 +100,26 @@ export default class TripPresenter {
     }
   }
 
+  // renderTrip = () => {
+  //   if (this.point.length > 0) {
+  //     this.#infoTrip = new HeaderView(this.point);
+  //     render(tripMainContainer, this.#infoTrip, RenderPosition.AFTERBEGIN);
+
+  //     if (this.point.length === 0) {
+  //       this.#renderNoTasks();
+  //       return;
+  //     }
+
+  //     const point = this.point.slice();
+
+  //     this.#renderPoints(point);
+  //   }
+  // };
+
+  // #renderPoints = (point) => {
+  //   point.forEach((tripEvent) => this.#renderTripPoint(tripEvent));
+  // };
+
   #renderMain = () => {
     if (this.#tripPoints.length === 0) {
       this.#renderNoTasks();
@@ -104,11 +128,14 @@ export default class TripPresenter {
       this.#renderTripPointsListElement();
       this.#sortTasks(this.#currentSortType);
       this.#renderTripPointsList();
+      // this.renderTrip();
+      // this.#renderPoints();
     }
   }
 
   #clearPointList = () => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
+    this.#infoTrip.clear();
   }
 }
