@@ -2,6 +2,7 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
 import { sortTaskByDuration } from '../utils/point';
+// import { locations } from '../mock/locations';
 
 const createHeaderView = (points) => {
   points.sort(sortTaskByDuration);
