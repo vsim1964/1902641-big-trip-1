@@ -20,3 +20,4 @@ export const sortTaskByPrice = (pointA, pointB) => {
     return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
   }
 };
+//point

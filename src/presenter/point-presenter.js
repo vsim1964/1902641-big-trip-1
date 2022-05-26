@@ -2,6 +2,7 @@ import PointItemView from '../view/point-item-view';
 import PointEditView from '../view/point-edit-view';
 import {render, RenderPosition, replace, remove} from '../utils/render';
 import {UserAction, UpdateType} from '../utils/const.js';
+import {isDatesEqual} from '../utils/favorite';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -38,6 +39,7 @@ export default class PointPresenter {
     this.#pointItemComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#pointEditComponent.setRollupClickHandler(this.#handleRollupClick);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
+    this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevPointItemComponent === null || prevPointEditComponent === null) {
       render(this.#tripPointsListElement, this.#pointItemComponent, RenderPosition.BEFOREEND);
@@ -107,12 +109,25 @@ export default class PointPresenter {
     );
   }
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+     !isDatesEqual(this.#tripPoint.dateFrom, update.dateFrom) ||
+     !isDatesEqual(this.#tripPoint.dateTo, update.dateTo) ||
+     (this.#tripPoint.basePrice !== update.basePrice);
+
     this.#changeData(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
-      point
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
     );
     this.#replaceFormToItem();
+  }
+
+  #handleDeleteClick = (task) => {
+    this.#changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      task,
+    );
   }
 }

@@ -40,3 +40,4 @@ export const createOffersSectionMarkup = (offersByTypes, pointType) => {
   }
   return '';
 };
+//form
