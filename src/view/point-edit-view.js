@@ -15,7 +15,8 @@ const createPointEditTemplate = (point) => {
   const pointTypesMarkup = createPointTypesMarkup(pointTypes(), type);
   const destinationOptions = locations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
-  const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
+  // const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
+  const photosMarkup = (picture) => `<img class="event__photo" src="${picture.src}" alt="Event photo">`;
 
   const editedOffersMarkup = createOffersSectionMarkup(pointTypes(), type);
 

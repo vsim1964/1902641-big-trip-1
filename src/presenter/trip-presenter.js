@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../utils/render';
+import { render, RenderPosition, remove } from '../utils/render';
 import PointsListView from '../view/points-list-view';
 import NoTripPointsView from '../view/no-trip-points-view';
 import TripSortView from '../view/trip-sort-view';
@@ -143,14 +143,14 @@ export default class TripPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
 
-    TripPresenter.remove(this.#sortComponent);
+    remove(this.#sortComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortType.SORT_DAY;
     }
 
     if (this.#noTripPointsComponent) {
-      TripPresenter.remove(this.#noTripPointsComponent);
+      remove(this.#noTripPointsComponent);
     }
   }
 
