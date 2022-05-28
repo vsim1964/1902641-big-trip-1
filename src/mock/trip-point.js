@@ -45,4 +45,3 @@ export const generatePoint = () => {
     type: pointArray[getRandomInteger(0, pointArray.length - 1)].type
   };
 };
-
