@@ -1,4 +1,4 @@
-import PointAddView from '../view/event-add-view';
+import PointItemView from '../view/point-item-view';
 import PointEditView from '../view/point-edit-view';
 import {render, RenderPosition, replace, remove} from '../utils/render';
 import {UserAction, UpdateType} from '../utils/const.js';
@@ -32,7 +32,7 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
-    this.#pointComponent =  new PointAddView(point);
+    this.#pointComponent =  new PointItemView(point);
     this.#pointEditComponent = new PointEditView(point);
 
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);

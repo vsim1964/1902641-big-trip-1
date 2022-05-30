@@ -55,7 +55,7 @@ const countTimeSpend = (countTypesInMs) => {
   let timeSpend = '';
 
   if (differenceInDays > 0) {
-     differenceInHours = differenceInHours - differenceInDays * 24;
+    differenceInHours = differenceInHours - differenceInDays * 24;
   }
 
   if (differenceInDays === 0 && differenceInHours === 0) {

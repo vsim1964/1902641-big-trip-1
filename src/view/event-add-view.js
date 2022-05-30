@@ -125,6 +125,11 @@ export default class PointAddView extends SmartView {
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
+  // setEditClickHandler = (callback) => {
+  //   this._callback.editClick = callback;
+  //   this.element.querySelector('.event__edit-btn').addEventListener('click', this.#editClickHandler);
+  // }
+
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
