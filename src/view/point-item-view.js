@@ -1,19 +1,19 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
-import {pointTypes} from '../mock/point-types';
+import { pointTypes } from '../mock/point-types';
 
 const createPointTemplate = (point) => {
-  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, location, isFavorite: isFavorite, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
 
-  const locationName = location.name;
+  const destinationName = destination.name;
 
   const dayFrom = dayjs(ISOFrom).format('MMM D');
   const dateFrom = dayjs(ISOFrom).format('YYYY-MM-DD');
 
-  const timeFrom = dayjs(ISOFrom).format('HH:mm');
+  const TimeFrom = dayjs(ISOFrom).format('HH:mm');
   const DatetimeFrom = dayjs(ISOFrom).format('YYYY-MM-DDTHH:mm');
 
-  const timeTo = dayjs(ISOTo).format('HH:mm');
+  const TimeTo = dayjs(ISOTo).format('HH:mm');
   const DatetimeTo = dayjs(ISOTo).format('YYYY-MM-DDTHH:mm');
 
   const getDuration = (beginISO, endISO) => {
@@ -51,7 +51,6 @@ const createPointTemplate = (point) => {
 
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
-
   const CreateOffers = (pointType, offersByTypes) => {
 
     const createOfferMarkup = (offer) => `<li class="event__offer">
@@ -80,12 +79,12 @@ const createPointTemplate = (point) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${locationName}</h3>
+                <h3 class="event__title">${type} ${destinationName}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="${DatetimeFrom}">${timeFrom}</time>
+                    <time class="event__start-time" datetime="${DatetimeFrom}">${TimeFrom}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="${DatetimeTo}">${timeTo}</time>
+                    <time class="event__end-time" datetime="${DatetimeTo}">${TimeTo}</time>
                   </p>
                   <p class="event__duration">${duration}</p>
                 </div>
