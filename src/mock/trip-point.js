@@ -31,17 +31,17 @@ const generateFromToDates = () => {
 
 export const generatePoint = () => {
   const dates = generateFromToDates();
-  const locationArray = destinations();
+  const destinationArray = destinations();
   const pointArray = pointTypes();
 
   return {
-    id: nanoid(),
     basePrice: generatePrice(),
     dateFrom: dates.from,
     dateTo: dates.to,
-    location: locationArray[getRandomInteger(0, locationArray.length - 1)],
-    isFavorite: Boolean(getRandomInteger(0, 1)),
-    points: pointArray,
-    type: pointArray[getRandomInteger(0, pointArray.length - 1)].type
+    destination: destinationArray[getRandomInteger(0,destinationArray.length-1)],
+    id: nanoid(),
+    isFavorite: Boolean(getRandomInteger(0,1)),
+    offers: pointArray,
+    type: pointArray[getRandomInteger(0,pointArray.length-1)].type
   };
 };
