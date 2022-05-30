@@ -1,4 +1,4 @@
-export const locations = () => ([
+export const destinations = () => ([
   {
     'name': 'Saint-Petersburg',
     'description': 'Russia is second largest and most important city and the world is northernmost city of millions',

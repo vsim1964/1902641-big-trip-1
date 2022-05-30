@@ -1,4 +1,4 @@
-import AbstractObservable from '../utils/abstract-observable';
+import AbstractObservable from '../utils/abstract-observable.js';
 
 export default class PointsModel extends AbstractObservable {
   #points = [];
@@ -12,6 +12,7 @@ export default class PointsModel extends AbstractObservable {
   }
 
   updatePoint = (updateType, update) => {
+
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {

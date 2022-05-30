@@ -1,4 +1,4 @@
-import { locations } from '../mock/locations';
+import { destinations } from '../mock/destinations';
 import { pointTypes } from '../mock/point-types';
 import SmartView from './smart-view';
 import { createPointTypesMarkup, createOffersSectionMarkup } from '../utils/path';
@@ -13,10 +13,9 @@ const createPointEditTemplate = (point) => {
   const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
   const pointTypesMarkup = createPointTypesMarkup(pointTypes(), type);
-  const destinationOptions = locations().map((x) => (`<option value="${x.name}"></option>`)).join('');
+  const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
-  // const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
-  const photosMarkup = (picture) => `<img class="event__photo" src="${picture.src}" alt="Event photo">`;
+  const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
 
   const editedOffersMarkup = createOffersSectionMarkup(pointTypes(), type);
 
@@ -80,7 +79,6 @@ const createPointEditTemplate = (point) => {
               </form>
             </li>`;
 };
-
 
 export default class PointEditView extends SmartView {
   #datepickerFrom = null;
@@ -155,6 +153,7 @@ export default class PointEditView extends SmartView {
     this.#setDatepicker();
     this.setRollupClickHandler(this._callback.rollupClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   #setInnerHandlers = () => {
@@ -162,10 +161,6 @@ export default class PointEditView extends SmartView {
       .addEventListener('change', this.#typeGroupClickHandler);
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#destinationChangeHandler);
-    this.element.querySelector('.event__input-start-time')
-      .addEventListener('change', this.#startTimeChangeHandler);
-    this.element.querySelector('.event__input-end-time')
-      .addEventListener('change', this.#endTimeChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceChangeHandler);
   }
@@ -180,23 +175,10 @@ export default class PointEditView extends SmartView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      location: this.#getChangedLocation(evt.target.value)
+      destination: this.#getChangedDestination(evt.target.value)
     }, false);
   }
 
-  #startTimeChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      dateFrom: evt.target.value
-    }, true);
-  }
-
-  #endTimeChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      dateTo: evt.target.value
-    }, true);
-  }
 
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
@@ -222,34 +204,41 @@ export default class PointEditView extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
-    this._callback.formSubmit(this._data);
     this._callback.formSubmit(PointEditView.parseDataToPoint(this._data));
   }
 
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  }
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(PointEditView.parseDataToPoint(this._data));
+  }
+
+
   static parsePointToData = (point) => ({...point,
-    // to be continue
   });
 
   static parseDataToPoint = (data) => {
     const point = {...data};
-    // to be continue
 
     return point;
   }
 
-  #getChangedLocation = (locationName) => {
-    const allLocations = locations();
+  #getChangedDestination = (destinationName) => {
+    const allDestinations = destinations();
 
-    for (let i = 0; i < allLocations.length; i++) {
-      if (allLocations[i].name === locationName) {
-        return allLocations[i];
+    for (let i = 0; i < allDestinations.length; i++) {
+      if (allDestinations[i].name === destinationName) {
+        return allDestinations[i];
       }
     }
 
     return {
-      'name': '',
       'description': null,
+      'name': '',
       'pictures': []
     };
   };

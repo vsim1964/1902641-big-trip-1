@@ -42,7 +42,6 @@ export default class PointNewPresenter {
     this.#changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      //Без сервера берутся числа самостоятельно
       {id: nanoid(), ...task},
     );
     this.destroy();

@@ -4,11 +4,9 @@ import NoTripPointsView from '../view/no-trip-points-view';
 import TripSortView from '../view/trip-sort-view';
 import PointPresenter from './point-presenter';
 import PointNewPresenter from './point-new-presenter';
-// import HeaderView from '../view/header-view';
-import { FilterType, SortType, UpdateType, UserAction } from '../utils/const';
-import { sortTaskByDay, sortTaskByDuration, sortTaskByPrice } from '../utils/point';
 import {filter} from '../utils/filter';
-// const tripMainContainer = document.querySelector('.trip-main');
+import {SortType, UpdateType, UserAction, FilterType} from '../utils/const';
+import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point';
 
 export default class TripPresenter {
   #mainElement = null;

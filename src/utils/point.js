@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export const sortTaskByDay = (pointA, pointB) => dayjs(pointA.startDate).diff(dayjs(pointB.startDate));
+export const sortTaskByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 
 export const sortTaskByDuration = (pointA, pointB) => {
   const durationPointA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));

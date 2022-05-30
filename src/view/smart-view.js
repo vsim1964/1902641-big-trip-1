@@ -1,6 +1,6 @@
-import AbstractView from './abstract-view';
+import AbstractView from './abstract-view.js';
 
-export default class SmartView extends AbstractView{
+export default class SmartView extends AbstractView {
   _data = {};
 
   updateData = (update, justDataUpdating) => {
@@ -18,13 +18,13 @@ export default class SmartView extends AbstractView{
   }
 
   updateElement = () => {
-    const secElement = this.element;
-    const parent = secElement.parentElement;
+    const prevElement = this.element;
+    const parent = prevElement.parentElement;
     this.removeElement();
 
     const newElement = this.element;
 
-    parent.replaceChild(newElement, secElement);
+    parent.replaceChild(newElement, prevElement);
 
     this.restoreHandlers();
   }
