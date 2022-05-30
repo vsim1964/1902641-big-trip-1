@@ -17,7 +17,7 @@ const createFilterTemplate = (filterItems, currentFilterType) => {
         </form>`;
 };
 
-export default class TripFiltersView extends AbstractView {
+export default class FiltersView extends AbstractView {
   #filters = null;
   #currentFilter = null;
 

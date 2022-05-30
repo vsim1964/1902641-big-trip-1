@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { locations } from './locations';
+import { destinations } from './destinations';
 import { pointTypes } from './point-types';
 import { nanoid } from 'nanoid';
 
@@ -31,7 +31,7 @@ const generateFromToDates = () => {
 
 export const generatePoint = () => {
   const dates = generateFromToDates();
-  const locationArray = locations();
+  const locationArray = destinations();
   const pointArray = pointTypes();
 
   return {
