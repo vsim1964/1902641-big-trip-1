@@ -7,11 +7,14 @@ import FilterPresenter from './presenter/filter-presenter';
 import PointsModel from './model/points-model';
 import FilterModel from './model/filters-model';
 import {MenuItem} from './utils/const';
+import ApiService from './service/api-service.js';
 
 const TRIP_POINTS_COUNT = 10;
+const AUTORIZATION = 'Basic u4mtv8m3498tmiemmbe89';
+const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 const points = Array.from({length: TRIP_POINTS_COUNT}, generatePoint);
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel(new ApiService(END_POINT, AUTORIZATION));
 pointsModel.points = points;
 
 const filterModel = new FilterModel();
