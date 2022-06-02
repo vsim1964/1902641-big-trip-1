@@ -82,7 +82,7 @@ export default class PointsModel extends AbstractObservable {
 
   #adaptToClient = (point) => {
     const adaptedPoint = {...point,
-      basePrice: point['bace_price'],
+      basePrice: point['base_price'],
       isfavorite: point['is_favorite'],
       dateTo: point['date_to'],
       dateFrom: point['date_from'],

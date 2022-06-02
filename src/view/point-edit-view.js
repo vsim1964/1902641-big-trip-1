@@ -94,7 +94,7 @@ export default class PointEditView extends SmartView {
   }
 
   get template() {
-    return createPointEditTemplate(this._data, this.#destinations, this.#offers);
+    return createPointEditTemplate(this._data, this.#offers, this.#destinations);
   }
 
   removeElement = () => {
