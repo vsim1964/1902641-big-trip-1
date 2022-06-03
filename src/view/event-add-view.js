@@ -1,16 +1,14 @@
-import { destinations } from '../mock/destinations';
-import { pointTypes } from '../mock/point-types';
 import SmartView from './smart-view';
 import { createOffersSectionMarkup, createPointTypesMarkup } from '../utils/path';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointAddTemplate = (point) => {
-  const {basePrice: price, destination, type} = point;
+const createPointAddTemplate = (point, offers, destinations) => {
+  const { basePrice: price, destination, type } = point;
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
-  const pointTypesMarkup = createPointTypesMarkup(pointTypes(), type);
+  const pointTypesMarkup = createPointTypesMarkup(offers, type);
   const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const createPhotosMarkup = (dest) => {
@@ -24,7 +22,7 @@ const createPointAddTemplate = (point) => {
 
   const photosMarkup = createPhotosMarkup(destination);
 
-  const editedOffersMarkup = createOffersSectionMarkup(pointTypes(), type);
+  const editedOffersMarkup = createOffersSectionMarkup(offers, type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -63,7 +61,7 @@ const createPointAddTemplate = (point) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price ? price.toString() : '')}">
+                     <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price.toString() ? price.toString() : '')}">
                   </div>
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
                   <button class="event__reset-btn" type="reset">Cancel</button>
@@ -85,17 +83,20 @@ const createPointAddTemplate = (point) => {
 export default class PointAddView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
+  #offers = null;
+  #destinations = null;
 
-  constructor(point) {
+  constructor(offers, destinations) {
     super();
-    this._data = PointAddView.createEmptyPoint(point);
-
+    this._data = PointAddView.createEmptyPoint(offers);
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointAddTemplate(this._data);
+    return createPointAddTemplate(this._data, this.#offers, this.#destinations);
   }
 
   removeElement = () => {
@@ -125,11 +126,6 @@ export default class PointAddView extends SmartView {
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
-  // setEditClickHandler = (callback) => {
-  //   this._callback.editClick = callback;
-  //   this.element.querySelector('.event__edit-btn').addEventListener('click', this.#editClickHandler);
-  // }
-
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
@@ -145,7 +141,7 @@ export default class PointAddView extends SmartView {
       this.element.querySelector('.event__input-start-time'),
       {
         enableTime: true,
-        dateFormat: 'd/m/y H:i' ,
+        dateFormat: 'd/m/y H:i',
         defaultDate: this._data.dateFrom,
         onChange: this.#dateFromChangeHandler
       },
@@ -213,8 +209,8 @@ export default class PointAddView extends SmartView {
     this._callback.deleteClick(PointAddView.parseDataToPoint(this._data));
   }
 
-  static createEmptyPoint = () => {
-    const offerArray = pointTypes();
+  static createEmptyPoint = (off) => {
+    const offerArray = off;
     const date = new Date();
     return {
       basePrice: 0,
@@ -225,24 +221,24 @@ export default class PointAddView extends SmartView {
         'name': '',
         'pictures': []
       },
-      id: null,
       isFavorite: false,
       offers: offerArray,
       type: 'taxi'
     };
   }
 
-  static parsePointToData = (point) => ({...point,
+  static parsePointToData = (point) => ({
+    ...point,
   });
 
   static parseDataToPoint = (data) => {
-    const point = {...data};
+    const point = { ...data };
 
     return point;
   }
 
   #getChangedDestination = (destinationName) => {
-    const allDestinations = destinations();
+    const allDestinations = this.#destinations;
 
     for (let i = 0; i < allDestinations.length; i++) {
       if (allDestinations[i].name === destinationName) {

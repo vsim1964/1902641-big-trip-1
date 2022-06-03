@@ -1,23 +1,21 @@
-import {destinations} from '../mock/destinations';
-import {pointTypes} from '../mock/point-types';
 import SmartView from './smart-view';
 import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/path';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointEditTemplate = (point) => {
+const createPointEditTemplate = (point, offers, destinations) => {
 
   const {basePrice: price, destination, type} = point;
 
   const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-  const pointTypesMarkup = createPointTypesMarkup(pointTypes(), type);
-  const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
+  const pointTypesMarkup = createPointTypesMarkup(offers, type);
+  const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
 
-  const editedOffersMarkup = createOffersSectionMarkup(pointTypes(), type);
+  const editedOffersMarkup = createOffersSectionMarkup(offers, type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -83,17 +81,20 @@ const createPointEditTemplate = (point) => {
 export default class PointEditView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
+  #offers = null;
+  #destinations = null;
 
-  constructor(point) {
+  constructor(point, offers, destinations) {
     super();
     this._data = PointEditView.parsePointToData(point);
-
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointEditTemplate(this._data);
+    return createPointEditTemplate(this._data, this.#offers, this.#destinations);
   }
 
   removeElement = () => {
@@ -144,7 +145,7 @@ export default class PointEditView extends SmartView {
       this.element.querySelector('.event__input-start-time'),
       {
         enableTime: true,
-        dateFormat: 'd/m/y H:i' ,
+        dateFormat: 'd/m/y H:i',
         defaultDate: this._data.dateFrom,
         onChange: this.#dateFromChangeHandler
       },
@@ -192,7 +193,7 @@ export default class PointEditView extends SmartView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      destination: this.#getChangedDestination(evt.target.value)
+      destination: this.#getChangedDestination(evt.target.value, this.#destinations)
     }, false);
   }
 
@@ -228,8 +229,8 @@ export default class PointEditView extends SmartView {
     return point;
   }
 
-  #getChangedDestination = (destinationName) => {
-    const allDestinations = destinations();
+  #getChangedDestination = (destinationName, destinations) => {
+    const allDestinations = destinations;
 
     for (let i = 0; i < allDestinations.length; i++) {
       if (allDestinations[i].name === destinationName) {
