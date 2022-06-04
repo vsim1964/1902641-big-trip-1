@@ -1,6 +1,6 @@
 import SmartView from './smart-view';
 import {createPointTypesMarkup} from '../utils/path';
-import { createOffersSectionMarkup, changecheckedMarkup, getChangedByTypeOffers } from '../utils/offers';
+import { createOffersSectionMarkup, changeCheckedOffers, getChangedByTypeOffers } from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
@@ -105,7 +105,7 @@ export default class PointEditView extends SmartView {
   }
 
   get template() {
-    return createPointEditTemplate(this._data, this.#destinations, this.#ofOffers);
+    return createPointEditTemplate(this._data, this.#ofOffers, this.#destinations);
   }
 
   removeElement = () => {
@@ -173,6 +173,12 @@ export default class PointEditView extends SmartView {
     );
   }
 
+  #dateFromChangeHandler = ([userDate]) => {
+    this.updateData({
+      dateFrom: userDate.toISOString(),
+    });
+  }
+
   #setInnerHandlers = () => {
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeGroupClickHandler);
@@ -180,12 +186,26 @@ export default class PointEditView extends SmartView {
       .addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceChangeHandler);
+
+    const offerElements = this.element.querySelectorAll('.event__offer-label');
+    for (let i = 0; i < offerElements.length; i++) {
+      offerElements[i].addEventListener('click', this.#offerClickHandler);
+    }
   }
 
-  #dateFromChangeHandler = ([userDate]) => {
+  #offerClickHandler = (evt) => {
+    evt.preventDefault();
+    const offers = this._data.offers;
     this.updateData({
-      dateFrom: userDate.toISOString(),
-    });
+      offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
+    }, false);
+  }
+
+  #basePriceChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      basePrice: parseInt(evt.target.value, 10)
+    }, true);
   }
 
   #dateToChangeHandler = ([userDate]) => {
@@ -197,7 +217,8 @@ export default class PointEditView extends SmartView {
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      type: evt.target.value
+      type: evt.target.value,
+      offers: getChangedByTypeOffers(this.#ofOffers, evt.target.value)
     }, false);
   }
 
@@ -206,13 +227,6 @@ export default class PointEditView extends SmartView {
     this.updateData({
       destination: this.#getChangedDestination(evt.target.value, this.#destinations)
     }, false);
-  }
-
-  #basePriceChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      basePrice: parseInt(evt.target.value, 10)
-    }, true);
   }
 
   #rollupClickHandler = (evt) => {
@@ -232,11 +246,16 @@ export default class PointEditView extends SmartView {
 
 
   static parsePointToData = (point) => ({...point,
+    isDisabled: false,
+    isSaving: false,
+    isDeleting: false
   });
 
   static parseDataToPoint = (data) => {
     const point = {...data};
-
+    delete point.isDeleting;
+    delete point.isSaving;
+    delete point.isDisabled;
     return point;
   }
 
