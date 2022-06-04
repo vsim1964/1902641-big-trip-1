@@ -38,9 +38,10 @@ const handleSiteMenuClick = (menuItem) => {
     case MenuItem.TABLE:
       if (mode !== 'TABLE') {
         filterPresenter.init();
-        tripPresenter.init();
-        remove(statisticsComponent);
-        mode = 'TABLE';
+        tripPresenter.init().finally(() => {
+          remove(statisticsComponent);
+          mode = 'TABLE';
+        });
       }
       break;
     case MenuItem.STATS:
@@ -66,6 +67,7 @@ tripPresenter.init().finally(() => {
 });
 
 document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+  evt.target.disabled = true;
   evt.preventDefault();
   remove(statisticsComponent);
   filterPresenter.destroy();

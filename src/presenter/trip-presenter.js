@@ -1,13 +1,14 @@
 import TripSortView from '../view/trip-sort-view';
 import PointListView from '../view/points-list-view';
 import NoPointView from '../view/no-trip-points-view';
-import PointPresenter from './point-presenter';
+import PointPresenter , {State as PointPresenterViewState}from './point-presenter';
 import PointNewPresenter from './point-new-presenter';
 import {render, RenderPosition, remove} from '../utils/render';
 import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point';
 import {filter} from '../utils/filter';
 import {SortType, UpdateType, UserAction, FilterType} from '../utils/const';
 import LoadingView from '../view/loading-view';
+
 
 export default class TripPresenter {
   #mainContainer = null;
@@ -79,7 +80,7 @@ export default class TripPresenter {
   }
 
   destroy = () => {
-    this.#clearTable( true);
+    this.#clearTable(true);
 
     this.#pointsModel.removeObserver(this.#handleModelEvent);
     this.#filterModel.removeObserver(this.#handleModelEvent);
@@ -88,7 +89,7 @@ export default class TripPresenter {
   createPoint = (callback) => {
     this.#clearTable();
     this.#renderTable();
-    this.#pointNewPresenter.init(callback, this.#offers, this.#destinations);
+    this.#pointNewPresenter.init(callback, this.#destinations, this.#offers);
   }
 
   #handleModeChange = () => {
@@ -96,16 +97,31 @@ export default class TripPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   }
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType, update);
+        this.#pointPresenter.get(update.id).setViewState(PointPresenterViewState.SAVING);
+        try {
+          await this.#pointsModel.updatePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenter.get(update.id).setViewState(PointPresenterViewState.ABORTING);
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
+        this.#pointNewPresenter.setSaving();
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch(err) {
+          this.#pointNewPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
+        this.#pointPresenter.get(update.id).setViewState(PointPresenterViewState.DELETING);
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenter.get(update.id).setViewState(PointPresenterViewState.ABORTING);
+        }
         break;
     }
   }
@@ -120,7 +136,7 @@ export default class TripPresenter {
         this.#renderTable();
         break;
       case UpdateType.MAJOR:
-        this.#clearTable( true);
+        this.#clearTable(true);
         this.#renderTable();
         break;
       case UpdateType.INIT:
@@ -149,7 +165,7 @@ export default class TripPresenter {
   }
 
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange, this.#offers, this.#destinations);
+    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange, this.#destinations, this.#offers);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
@@ -202,22 +218,3 @@ export default class TripPresenter {
     this.#renderPoints(points);
   }
 }
-// renderTrip = () => {
-//   if (this.point.length > 0) {
-//     this.#infoTrip = new HeaderView(this.point);
-//     render(tripMainContainer, this.#infoTrip, RenderPosition.AFTERBEGIN);
-
-//     if (this.point.length === 0) {
-//       this.#renderNoTasks();
-//       return;
-//     }
-
-//     const point = this.point.slice();
-
-//     this.#renderPoints(point);
-//   }
-// };
-
-// #renderPoints = (point) => {
-//   point.forEach((tripEvent) => this.#renderTripPoint(tripEvent));
-// };

@@ -7,7 +7,7 @@ export default class PointNewPresenter {
   #changeData = null;
   #pointAddComponent = null;
   #destroyCallback = null;
-  #offers = null;
+  #ofOffers = null;
   #destinations = null;
 
   constructor(pointListContainer, changeData) {
@@ -21,9 +21,9 @@ export default class PointNewPresenter {
     if (this.#pointAddComponent !== null) {
       return;
     }
-    this.#offers = offers;
+    this.#ofOffers = offers;
     this.#destinations = destinations;
-    this.#pointAddComponent = new PointAddView(this.#offers, this.#destinations);
+    this.#pointAddComponent = new PointAddView(this.#destinations, this.#ofOffers);
     this.#pointAddComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointAddComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
@@ -42,6 +42,26 @@ export default class PointNewPresenter {
     this.#pointAddComponent = null;
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
+  }
+
+  setSaving = () => {
+    this.#pointAddComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#pointAddComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointAddComponent.shake(resetFormState);
   }
 
   #handleFormSubmit = (point) => {
@@ -50,7 +70,7 @@ export default class PointNewPresenter {
       UpdateType.MINOR,
       point,
     );
-    this.destroy();
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
   #handleDeleteClick = () => {

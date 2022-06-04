@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
-import { pointTypes } from '../mock/point-types';
 
 const createPointTemplate = (point) => {
-  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, offers, destination, isFavorite, type} = point;
 
   const destinationName = destination.name;
 
@@ -51,27 +50,19 @@ const createPointTemplate = (point) => {
 
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
-  const CreateOffers = (pointType, offersByTypes) => {
+  const CreateOffers = (checkedOffers) => {
 
-    const createOfferMarkup = (offer) => `<li class="event__offer">
+    const createOfferMarkup = (offer) => (offer.isChosen ? `<li class="event__offer">
                     <span class="event__offer-title">${offer.title}</span>
                     &plus;&euro;&nbsp;
                     <span class="event__offer-price">${offer.price}</span>
-                  </li>`;
+                  </li>` : '');
 
-    let offersByCurrentType = [];
-
-    for (let i = 0; i < offersByTypes.length; i++) {
-      if (offersByTypes[i].type === pointType) {
-        offersByCurrentType = offersByTypes[i].offers;
-      }
-    }
-
-    return offersByCurrentType.map(createOfferMarkup).join('');
+    return checkedOffers.map(createOfferMarkup).join('');
   };
 
 
-  const OffersMarkup = CreateOffers(type, pointTypes());
+  const OffersMarkup = CreateOffers(offers);
 
   return `<li class="trip-events__item">
               <div class="event">
